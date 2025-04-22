@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Happy 21st Birthday!</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Fira+Sans:wght@500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.cdnfonts.com/css/fivo-sans-modern"
+      rel="stylesheet"
+    />
+
+
+<!-- css -->
+
+    <style>
+
+canvas.balloons,
+#confetti {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 300vw;
+    height: 500vh;
+    pointer-events: none;
+    z-index: 9999;
+    display: block;
+}
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: pink;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+  }
+  
+  .play-btn {
+    padding: 1rem 2rem;
+    font-size: 1.5rem;
+    border: none;
+    border-radius: 20px;
+    background-color: hotpink;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    box-shadow: 0 8px 20px rgba(255, 105, 180, 0.4);
+    animation: pulse 1.5s infinite;
+  }
+
+  .countdown {
+    font-size: 20rem;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    animation: fadeIn 0.5s ease-in-out;
+  }
+
+  .hide {
+    display: none;
+  }
+  .play-btn:hover {
+    transform: scale(1.1);
+    background-color: deeppink;
+  }
+
+      .hide {
+        display: none;
+      }
+
+      * {
+        box-sizing: border-box;
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        font-family: "Fivo Sans Modern", sans-serif;
+        background: linear-gradient(
+            120deg,
+            rgba(255, 182, 193, 0.8),
+            rgba(255, 240, 245, 0.9)
+          ),
+          url("background-romantis.jpg") no-repeat center center fixed;
+        background-size: cover;
+        backdrop-filter: blur(10px);
+        overflow-x: hidden;
+        color: #5c2a5d;
+        text-align: center;
+        transition: background 1s ease-in-out;
+      }
+      section {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+      }
+      section.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      header {
+        padding: 2rem;
+        color: #fff;
+        background: linear-gradient(
+          90deg,
+          rgba(255, 105, 180, 0.8),
+          rgba(255, 182, 193, 0.8)
+        );
+        backdrop-filter: blur(10px);
+      }
+      header h1 {
+        font-family: "Fira Sans", sans-serif;
+        font-size: 3.2rem;
+        margin: 0;
+      }
+      .section {
+        padding: 3rem 1rem;
+      }
+      h2 {
+        font-family: "Playfair Display", serif;
+        font-size: 2.8rem;
+        margin-bottom: 1rem;
+        color: #d63384;
+      }
+      p {
+        font-size: 1.2rem;
+        max-width: 700px;
+        margin: 1rem auto;
+        font-family: "Fivo Sans Modern", sans-serif;
+      }
+      .slider {
+        display: flex;
+        overflow-x: scroll;
+        scroll-snap-type: x mandatory;
+        justify-content: center;
+        scroll-behavior: smooth;
+      }
+      .slide {
+        flex: none;
+        scroll-snap-align: center;
+        width: 80vw;
+        max-width: 500px;
+        margin: 0 0.5rem;
+      }
+      .slide img {
+        width: 100%;
+        border-radius: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      #prevBtn,
+      #nextBtn {
+        background-color: #ffb6c1;
+        border: none;
+        font-size: 2rem;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+      .gallery img {
+        width: 100%;
+        border-radius: 10px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+      }
+      .gallery img:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      }
+      .lightbox {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 999;
+        display: none;
+      }
+      .lightbox img {
+        max-width: 90vw;
+        max-height: 90vh;
+        border-radius: 10px;
+      }
+      .history {
+        background: linear-gradient(to right, #ffe4ec, #fce5f5);
+        padding: 2rem;
+        border-radius: 10px;
+        max-width: 700px;
+        margin: 0 auto;
+        font-style: italic;
+        font-family: "Fivo Sans Modern", sans-serif;
+      }
+      .balloons,
+      .confetti {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+      }
+      .thankyou {
+        padding: 3rem 1rem;
+        background: radial-gradient(circle, #ffe4ec, #fcd1e3);
+        font-size: 1.4rem;
+        font-weight: bold;
+        font-family: "Playfair Display", serif;
+        color: #b30059;
+      }
+      .music-toggle {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #fff0f5;
+        border: none;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        font-size: 24px;
+        cursor: pointer;
+        z-index: 1000;
+      }
+      .music-toggle:focus {
+        outline: none;
+      }
+        @media (max-width: 768px) {
+        .music-toggle {
+          width: 50px;
+          height: 50px;
+          font-size: 20px;
+          bottom: 15px;
+          right: 15px;
+        }
+        @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(255, 105, 180, 0.6);
+    }
+    70% {
+      box-shadow: 0 0 0 20px rgba(255, 105, 180, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(255, 105, 180, 0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+      }
+
+    </style>
+
+
+<!-- HTML -->
+
+  <div id="overlay">
+    <div id="countdown" class="countdown hide"></div>
+    <button id="play-btn" class="play-btn">🎵 Play 🎉</button>
+  </div>
+
+    </style>
+
+    <canvas id="confetti"></canvas>
+    <canvas class="balloons"></canvas>
+    
+  </head>
+  <body>
+    <header>
+      <h1>Selamat Ulang Tahun, Sayang! 🎉</h1>
+      <p>Hari ini kamu genap 21 tahun! 🎂💖</p>
+    </header>
+
+    <section class="section">
+      <h2>✨ birthday flower girl ✨</h2>
+      <div style="position: relative; max-width: 500px; margin: 0 auto">
+        <button
+          id="prevBtn"
+          style="position: absolute; left: -40px; top: 40%; z-index: 10"
+        >
+          ⟨
+        </button>
+        <div class="slider" id="slider">
+          <div class="slide"><img src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\Urut\7u.jpeg" alt="Moment 1" /></div>
+          <div class="slide"><img src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\Urut\1u.jpeg" alt="Moment 2" /></div>
+          <div class="slide"><img src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\Urut\2u.jpeg" alt="Moment 3" /></div>
+          <div class="slide"><img src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\Urut\4u.jpeg" alt="Moment 4" /></div>
+          <div class="slide"><img src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\Urut\6u.jpeg" alt="Moment 5" /></div>
+          <div class="slide"><img src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\Urut\8u.jpeg" alt="Moment 6" /></div>
+          <div class="slide"><img src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\Urut\11u.jpeg" alt="Moment 7" /></div>
+          <div class="slide"><img src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\Urut\10u.jpeg" alt="Moment 8" /></div>
+        </div>
+        <button
+          id="nextBtn"
+          style="position: absolute; right: -40px; top: 40%; z-index: 10"
+        >
+          ⟩
+        </button>
+      </div>
+      <p>
+        Semoga di usia ke-21 ini kamu semakin bahagia, sehat, dan segala
+        harapanmu tercapai. Aku selalu ada buat kamu! 💕
+      </p>
+    </section>
+
+    <section class="section">
+      <h2>📸 Galeri Kenangan Kita 📸</h2>
+      <div class="gallery">
+        <img
+          src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\30 Foto\1.jpeg"
+          alt="Galeri 1"
+        />
+        <img
+          src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\30 Foto\2.JPG"
+          alt="Galeri 2"
+        />
+        <img
+          src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\30 Foto\3.jpeg"
+          alt="Galeri 3"
+        />
+        <img
+          src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\30 Foto\4.jpeg"
+          alt="Galeri 4"
+        />
+        <img
+          src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\30 Foto\5.jpeg"
+          alt="Galeri 5"
+        />
+        <img
+          src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\30 Foto\6.jpeg"
+          alt="Galeri 6"
+        />
+        <img
+          src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\30 Foto\7.jpeg"
+          alt="Galeri 7"
+        />
+        <img
+          src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\30 Foto\8.jpeg"
+          alt="Galeri 8"
+        />
+        <img src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\30 Foto\9.jpeg" alt="Galeri 9" />
+        <img src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\30 Foto\10.jpeg" alt="Galeri 10" />
+        <img src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\30 Foto\11.jpeg" alt="Galeri 11" />
+        <img src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\30 Foto\12.jpeg" alt="Galeri 12" />
+        <img src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\30 Foto\13.jpeg" alt="Galeri 13" />
+        <img src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\30 Foto\14.jpeg" alt="Galeri 14" />
+        <img src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\30 Foto\15.jpeg" alt="Galeri 15" />
+        <img src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\30 Foto\16.jpeg" alt="Galeri 16" />
+        <img src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\30 Foto\17.jpeg" alt="Galeri 17" />
+        <img src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\30 Foto\18.jpeg" alt="Galeri 18" />
+        <img src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\30 Foto\19.jpeg" alt="Galeri 19" />
+        <img src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\30 Foto\31.jpeg" alt="Galeri 20" />
+        <img src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\30 Foto\21.jpeg" alt="Galeri 21" />
+        <img src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\30 Foto\32.PNG" alt="Galeri 22" />
+        <img src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\30 Foto\23.jpeg" alt="Galeri 23" />
+        <img src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\30 Foto\24.jpeg" alt="Galeri 24" />
+        <img src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\30 Foto\25.jpeg" alt="Galeri 25" />
+        <img src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\30 Foto\26.jpeg" alt="Galeri 26" />
+        <img src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\30 Foto\27.jpeg" alt="Galeri 27" />
+        <img src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\30 Foto\28.jpeg" alt="Galeri 28" />
+        <img src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\30 Foto\29.jpeg" alt="Galeri 29" />
+        <img src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Foto\30 Foto\30.jpeg" alt="Galeri 30" />
+      </div>
+
+      <div class="lightbox" id="lightbox">
+        <img src="" alt="Preview" id="lightbox-img" />
+      </div>
+
+    </section>
+
+    <audio id="birthday-audio" loop>
+      <source src="E:\Visual Studio Code\Ulang Tahun Keysya\Asset\Lagu\HBD Audio.MP3" type="audio/mpeg" />
+    </audio>
+
+    <button class="music-toggle" id="music-toggle">🔊</button>
+
+    </body>
+  </html>
+  
+      <section class="section">
+        <h2>💗 Perjalanan Cinta Kita 💗</h2>
+        <div class="history">
+          <p>
+            Kita mulai dari chat kecil-kecilan, lalu bertemu di tempat pertama
+            kita janjian, makan es krim berdua, sampai akhirnya resmi jadi
+            pasangan. Hari-hari kita penuh suka dan duka, tapi aku selalu
+            bersyukur bisa jalanin semua itu sama kamu. Dan hari ini, aku pengen
+            bilang, aku cinta kamu... dan aku ingin terus bareng kamu! 💞
+          </p>
+        </div>
+      </section>
+  
+      <section class="section thankyou">
+        Terima kasih sudah jadi bagian terindah dalam hidupku 💖
+      </section>
+    
+
+<!-- JAVA SCRIPT -->
+
+    <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
+
+<script>
+  // Element references
+  const overlay = document.getElementById("overlay");
+  const countdown = document.getElementById("countdown");
+  const playBtn = document.getElementById("play-btn");
+  const audio = document.getElementById("birthday-audio");
+  const musicToggle = document.getElementById("music-toggle");
+  const confettiCanvas = document.getElementById("confetti");
+  const balloonsCanvas = document.querySelector(".balloons");
+  const slider = document.getElementById("slider");
+  const nextBtn = document.getElementById("nextBtn");
+  const prevBtn = document.getElementById("prevBtn");
+  const galleryImages = document.querySelectorAll(".gallery img");
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightbox-img");
+  const sections = document.querySelectorAll("section");
+
+  // === STEP 1: Play Button Click Handler ===
+  playBtn.addEventListener("click", () => {
+    playBtn.classList.add("hide");
+    countdown.classList.remove("hide");
+    let counter = 10;
+
+    const interval = setInterval(() => {
+      countdown.textContent = counter;
+      counter--;
+
+      if (counter < 0) {
+        clearInterval(interval);
+        countdown.classList.add("hide");
+        overlay.style.display = "none";
+
+        // STEP 2: Start the celebration
+        audio.play();
+        startConfetti();
+        startBalloons();
+      }
+    }, 1000);
+  });
+
+  // === STEP 2: Confetti Animation ===
+  let confetti; // simpan ke global
+
+function startConfetti() {
+const confettiSettings = {
+    target: "confetti",
+    max: 150,
+    size: 1.2,
+    animate: true,
+    colors: [
+      [255, 192, 203],
+      [255, 182, 193],
+      [255, 105, 180],
+    ],
+  };
+  confetti = new ConfettiGenerator(confettiSettings);
+  confetti.render();
+
+    window.addEventListener("resize", () => {
+    confetti.clear(); // Bersihkan sebelumnya
+    confetti = new ConfettiGenerator(confettiSettings);
+    confetti.render(); // Render ulang
+  });
+
+  function animateConfetti() {
+  // logika confetti (loop)
+  requestAnimationFrame(animateConfetti);
+}
+animateConfetti();
+
+}
+
+  // === STEP 3: Balloon Animation ===
+  function startBalloons() {
+  const ctx = balloonsCanvas.getContext("2d");
+
+  function resizeCanvas() {
+    balloonsCanvas.width = window.innerWidth;
+    balloonsCanvas.height = window.innerHeight;
+  }
+
+  resizeCanvas(); // Set awal
+  window.addEventListener("resize", resizeCanvas); // Update saat resize
+
+  const balloons = Array.from({ length: 50 }, () => ({
+    x: Math.random() * balloonsCanvas.width,
+    y: balloonsCanvas.height + Math.random() * 300,
+    speed: Math.random() * 1 + 0.5,
+  }));
+
+  function drawBalloons() {
+    ctx.clearRect(0, 0, balloonsCanvas.width, balloonsCanvas.height);
+    ctx.font = "30px Arial";
+    balloons.forEach((b) => {
+      ctx.fillText("🎈", b.x, b.y);
+      b.y -= b.speed;
+      if (b.y < -200) b.y = balloonsCanvas.height + Math.random() * 100;
+    });
+    requestAnimationFrame(drawBalloons);
+  }
+
+  drawBalloons();
+}
+
+  // === Music Toggle Button ===
+  let isPlaying = true;
+  musicToggle.addEventListener("click", () => {
+    if (isPlaying) {
+      audio.pause();
+      musicToggle.textContent = "🔇";
+    } else {
+      audio.play();
+      musicToggle.textContent = "🔊";
+    }
+    isPlaying = !isPlaying;
+  });
+
+  // === Gallery Lightbox ===
+  galleryImages.forEach((img) => {
+    img.addEventListener("click", () => {
+      lightboxImg.src = img.src;
+      lightbox.style.display = "flex";
+    });
+  });
+
+  lightbox.addEventListener("click", () => {
+    lightbox.style.display = "none";
+  });
+
+  // === Section Reveal on Scroll ===
+  function showSection() {
+    sections.forEach((section) => {
+      const top = section.getBoundingClientRect().top;
+      const windowHeight = window.innerHeight;
+      if (top < windowHeight - 100) {
+        section.classList.add("visible");
+      }
+    });
+  }
+  window.addEventListener("scroll", showSection);
+  window.addEventListener("load", showSection);
+
+  // === Slider Navigation ===
+  const slideWidth = slider.querySelector(".slide").offsetWidth + 16;
+  nextBtn.addEventListener("click", () => {
+    slider.scrollBy({ left: slideWidth, behavior: "smooth" });
+  });
+
+  prevBtn.addEventListener("click", () => {
+    slider.scrollBy({ left: -slideWidth, behavior: "smooth" });
+  });
+
+  // === Auto-scroll slider ===
+  let scrollPos = 0;
+  setInterval(() => {
+    scrollPos += slider.offsetWidth;
+    if (scrollPos >= slider.scrollWidth) scrollPos = 0;
+    slider.scrollTo({ left: scrollPos, behavior: "smooth" });
+  }, 3000);
+
+      </script>
+    </body>
+  </html>
